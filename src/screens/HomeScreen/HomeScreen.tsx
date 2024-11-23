@@ -1,5 +1,5 @@
-import { FlatList, StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useMemo, useReducer, useRef } from "react";
+import { FlatList, StyleSheet, View } from "react-native";
+import React, { useReducer, useRef } from "react";
 import DataManager from "@/services/datamanager";
 import { homeInitialState, homeReducer } from "./state/localState";
 import { useFetchCurrencies } from "./hooks/useFetchCoinsHook";
