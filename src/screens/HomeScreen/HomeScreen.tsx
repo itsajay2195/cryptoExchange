@@ -5,11 +5,21 @@ import { homeInitialState, homeReducer } from "./state/localState";
 import { useFetchCurrencies } from "./hooks/useFetchCoinsHook";
 import { CoinByMarketId } from "@/types";
 import CurrencyItem from "./components/CurrencyItemCard/Index";
+import { useRenderItemCardStyles } from "./components/CurrencyItemCard/styles";
+
+const ITEM_HEIGHT = 120;
+const getItemLayout = (data: any, index: number) => {
+  return {
+    length: ITEM_HEIGHT, // The height of each item
+    offset: ITEM_HEIGHT * index, // The distance of the item from the top
+    index, // The index of the item
+  };
+};
 
 const HomeScreen = () => {
   const [state, dispatch] = useReducer(homeReducer, homeInitialState);
   const ref = useRef(null);
-
+  const renderItemCardStyles = useRenderItemCardStyles();
   useFetchCurrencies(
     () => DataManager.getCurrencies("vs_currency=usd"), // Fetch function
     (data) =>
@@ -18,7 +28,7 @@ const HomeScreen = () => {
   );
 
   const renderItem = ({ item }: { item: CoinByMarketId }) => {
-    return <CurrencyItem data={item} />;
+    return <CurrencyItem data={item} styles={renderItemCardStyles} />;
   };
 
   return (
@@ -28,6 +38,7 @@ const HomeScreen = () => {
         data={state?.currencies}
         keyExtractor={(item, index) => item?.id?.toString()}
         renderItem={renderItem}
+        getItemLayout={getItemLayout}
       />
     </View>
   );
