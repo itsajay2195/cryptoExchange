@@ -1,6 +1,7 @@
 // 1. Define the initial state
 export const homeInitialState: HomeState = {
   currencies: [],
+  copyOfCurrencies: [],
   error: "",
   page: 1,
   hasMore: false,
@@ -13,6 +14,7 @@ export function homeReducer(state: HomeState, action: Action) {
       return {
         ...state,
         currencies: [...state.currencies, ...action.payload.currencies],
+        copyOfCurrencies: [...state.currencies, ...action.payload.currencies],
       };
     case "SET_ERROR":
       return { ...state, error: action.payload.error };

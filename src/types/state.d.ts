@@ -1,5 +1,6 @@
 interface HomeState {
   currencies: any[];
+  copyOfCurrencies: any[];
   error: string;
   page: number;
   hasMore?: boolean;

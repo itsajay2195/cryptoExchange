@@ -6,6 +6,7 @@ import { useFetchCurrencies } from "./hooks/useFetchCoinsHook";
 import { CoinByMarketId } from "@/types";
 import CurrencyItem from "./components/CurrencyItemCard/Index";
 import { useRenderItemCardStyles } from "./components/CurrencyItemCard/styles";
+import SearchBar from "@/components/SearchBar";
 
 const ITEM_HEIGHT = 70;
 const getItemLayout = (data: any, index: number) => {
@@ -42,6 +43,7 @@ const HomeScreen = () => {
     <View style={{ flex: 1, backgroundColor: "black", paddingVertical: 10 }}>
       <FlatList
         ref={ref}
+        ListHeaderComponent={SearchBar}
         data={state?.currencies}
         keyExtractor={(item) => item?.id?.toString()}
         renderItem={renderItem}
