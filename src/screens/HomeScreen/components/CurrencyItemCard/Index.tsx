@@ -11,7 +11,14 @@ const CurrencyItem = ({
 }) => {
   return (
     <View style={styles.container}>
-      <Text style={{ color: "black" }}>{data?.name}</Text>
+      <View style={styles.titleWrapper}>
+        <Text style={{ color: "black", fontWeight: "bold" }}>{data?.name}</Text>
+      </View>
+      <View style={styles.priceWrapper}>
+        <Text style={{ color: "black", fontWeight: "bold" }}>
+          {data?.current_price} $
+        </Text>
+      </View>
     </View>
   );
 };

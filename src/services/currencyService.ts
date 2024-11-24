@@ -24,3 +24,10 @@ export const getCurrencyById = async (
     throw error;
   }
 };
+
+export const getSupportedCoins = async () => {
+  // Example Binance API endpoint for supported coins
+  const response = await fetch("https://api.binance.com/api/v3/exchangeInfo");
+  const data = await response.json();
+  return data.symbols.map((symbol: any) => symbol.baseAsset.toLowerCase());
+};

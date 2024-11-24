@@ -1,5 +1,5 @@
 import { FlatList, StyleSheet, View } from "react-native";
-import React, { useReducer, useRef } from "react";
+import React, { useCallback, useReducer, useRef } from "react";
 import DataManager from "@/services/datamanager";
 import { homeInitialState, homeReducer } from "./state/localState";
 import { useFetchCurrencies } from "./hooks/useFetchCoinsHook";
@@ -7,7 +7,7 @@ import { CoinByMarketId } from "@/types";
 import CurrencyItem from "./components/CurrencyItemCard/Index";
 import { useRenderItemCardStyles } from "./components/CurrencyItemCard/styles";
 
-const ITEM_HEIGHT = 120;
+const ITEM_HEIGHT = 70;
 const getItemLayout = (data: any, index: number) => {
   return {
     length: ITEM_HEIGHT, // The height of each item
@@ -21,24 +21,32 @@ const HomeScreen = () => {
   const ref = useRef(null);
   const renderItemCardStyles = useRenderItemCardStyles();
   useFetchCurrencies(
-    () => DataManager.getCurrencies("vs_currency=usd"), // Fetch function
+    (page) =>
+      DataManager.getCurrencies(`vs_currency=usd&per_page=10&page=${page}`), // Fetch function,
     (data) =>
       dispatch({ type: "SET_CURRENCIES", payload: { currencies: data } }), // Success callback
-    (error) => dispatch({ type: "SET_ERROR", payload: { error } }) // Error callback
+    (error) => dispatch({ type: "SET_ERROR", payload: { error } }), // Error callback
+    state.page,
+    [state?.page]
   );
+
+  const onEndReached = useCallback(() => {
+    dispatch({ type: "SET_PAGE", payload: { page: state.page + 1 } });
+  }, [state?.page]);
 
   const renderItem = ({ item }: { item: CoinByMarketId }) => {
     return <CurrencyItem data={item} styles={renderItemCardStyles} />;
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: "black" }}>
+    <View style={{ flex: 1, backgroundColor: "black", paddingVertical: 10 }}>
       <FlatList
         ref={ref}
         data={state?.currencies}
-        keyExtractor={(item, index) => item?.id?.toString()}
+        keyExtractor={(item) => item?.id?.toString()}
         renderItem={renderItem}
         getItemLayout={getItemLayout}
+        onEndReached={onEndReached}
       />
     </View>
   );

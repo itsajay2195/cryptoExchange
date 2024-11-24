@@ -1,18 +1,22 @@
 import { useEffect } from "react";
 
-type FetchCurrencies = () => Promise<any>;
+type FetchCurrencies = (page: number) => Promise<any>;
 type OnSuccess = (data: any[]) => void;
 type OnError = (error: string) => void;
 
 export const useFetchCurrencies = (
   fetchCurrencies: FetchCurrencies,
   onSuccess: OnSuccess,
-  onError: OnError
+  onError: OnError,
+  page = 1,
+  dependencies: any[] = []
 ) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await fetchCurrencies();
+        // const supportedCoins = await getSupportedCurrencies();
+        console.log("page");
+        const data = await fetchCurrencies(page);
         onSuccess(data);
       } catch (error) {
         console.error(error);
@@ -21,5 +25,5 @@ export const useFetchCurrencies = (
     };
 
     fetchData();
-  }, []);
+  }, [...dependencies]);
 };
