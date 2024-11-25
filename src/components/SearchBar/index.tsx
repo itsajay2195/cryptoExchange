@@ -2,7 +2,13 @@ import { StyleSheet, Text, View, TextInput } from "react-native";
 import React from "react";
 import EvilIcons from "@expo/vector-icons/EvilIcons";
 
-const SearchBar = ({ value, onChange }: { value: string; onChange: any }) => {
+const SearchBar = ({
+  value,
+  onChange,
+}: {
+  value: string | undefined;
+  onChange: any;
+}) => {
   return (
     <View
       style={{
@@ -20,7 +26,7 @@ const SearchBar = ({ value, onChange }: { value: string; onChange: any }) => {
       <View style={{ flex: 1 }}>
         <TextInput
           value={value}
-          onChange={onChange}
+          onChangeText={onChange}
           placeholder={"Search here...."}
         />
       </View>

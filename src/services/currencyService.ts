@@ -31,3 +31,13 @@ export const getSupportedCoins = async () => {
   const data = await response.json();
   return data.symbols.map((symbol: any) => symbol.baseAsset.toLowerCase());
 };
+
+export const searchCoins = async (query: string): Promise<CoinInfo[]> => {
+  try {
+    console.log("inninin api", query);
+    const response = await networkClient.get(`/search/?query=${query}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
