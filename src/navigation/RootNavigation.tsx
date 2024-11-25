@@ -12,9 +12,13 @@ import { navigationRef } from "./NavigationUtils";
 import HomeScreen from "@/screens/HomeScreen/HomeScreen";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { ThemeProvider } from "@/theme/ThemeProvider";
+import OfflineScreen from "@/screens/OfflineScreen/OfflineScreen";
+import useOfflineDetector from "@/hooks/useOfflineDetector";
+import NetInfoWrapper from "@/HOC/NetInfoWrapper";
 
 const Stack = createNativeStackNavigator();
 const RootNavigation = () => {
+  // useOfflineDetector();
   return (
     <NavigationContainer ref={navigationRef}>
       <ThemeProvider>
@@ -26,13 +30,20 @@ const RootNavigation = () => {
               style={{ flex: 1 }}
             >
               <ErrorBoundary>
-                <Stack.Navigator>
-                  <Stack.Screen
-                    name="HOME_SCREEN"
-                    component={HomeScreen}
-                    options={{ headerShown: false }}
-                  />
-                </Stack.Navigator>
+                <NetInfoWrapper>
+                  <Stack.Navigator>
+                    <Stack.Screen
+                      name="HOME_SCREEN"
+                      component={HomeScreen}
+                      options={{ headerShown: false }}
+                    />
+                    <Stack.Screen
+                      name="OFFLINE_SCREEN"
+                      component={OfflineScreen}
+                      options={{ headerShown: false }}
+                    />
+                  </Stack.Navigator>
+                </NetInfoWrapper>
               </ErrorBoundary>
               {/* </NotificationCard> */}
             </KeyboardAvoidingView>
