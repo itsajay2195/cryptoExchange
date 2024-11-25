@@ -22,27 +22,30 @@ networkClient.interceptors.request.use(
 );
 
 // Add response interceptor for error handling
-networkClient.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    let errorMessage = "Something went wrong. Please try again later.";
+export const setupInterceptor = (cb: (val: string) => void) => {
+  networkClient.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      let errorMessage = "Something went wrong. Please try again later.";
 
-    if (!error.response) {
-      // If no response, it's likely an offline issue
-      errorMessage =
-        "You are currently offline. Please check your internet connection.";
-    } else if (error.response.status === 404) {
-      errorMessage = "Resource not found.";
-    } else if (error.response.status === 500) {
-      errorMessage = "Server error. Please try again later.";
-    } else if (error.response.status === 401) {
-      errorMessage = "Unauthorized. Please check your credentials.";
+      if (!error.response) {
+        // If no response, it's likely an offline issue
+        errorMessage =
+          "You are currently offline. Please check your internet connection.";
+      } else if (error.response.status === 404) {
+        errorMessage = "Resource not found.";
+      } else if (error.response.status === 500) {
+        errorMessage = "Server error. Please try again later.";
+      } else if (error.response.status === 401) {
+        errorMessage = "Unauthorized. Please check your credentials.";
+      }
+
+      console.error("API Error:", error.response?.data || error.message);
+      cb(error.response?.data || error.message);
+      return Promise.reject(error);
     }
-
-    console.error("API Error:", error.response?.data || error.message);
-    return Promise.reject(error);
-  }
-);
+  );
+};
 
 export default networkClient;
 

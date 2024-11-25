@@ -1,9 +1,17 @@
 import { StyleSheet, Text, View } from "react-native";
 import { registerRootComponent } from "expo";
 import RootNavigation from "@/navigation/RootNavigation";
+import useShowSnackBarHook from "@/hooks/useShowSnackBarHook";
+import { setupInterceptor } from "@/services/networkClient";
+import { SnackBarProvider, useSnackBar } from "@/context/SnackBarContext";
+import { useEffect } from "react";
 
 export default function App() {
-  return <RootNavigation />;
+  return (
+    <SnackBarProvider>
+      <RootNavigation />
+    </SnackBarProvider>
+  );
 }
 
 registerRootComponent(App);
